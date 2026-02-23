@@ -23,26 +23,11 @@ function useMousePosition() {
 
 const VsoftLogo = () => (
     <div className="flex items-center gap-3 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-        <div className="relative w-10 h-10">
-            <motion.div 
-                animate={{ rotate: 360 }}
-                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 to-emerald-400/20 rounded-xl blur-md"
-            />
-            <div className="absolute inset-0 bg-slate-900 border border-white/10 rounded-xl flex items-center justify-center shadow-2xl group-hover:border-indigo-500/50 transition-colors">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L3 7V17L12 22L21 17V7L12 2Z" stroke="url(#logo-grad)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M12 22V12" stroke="url(#logo-grad)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M21 7L12 12L3 7" stroke="url(#logo-grad)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <defs>
-                        <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="22" gradientUnits="userSpaceOnUse">
-                            <stop stopColor="#6366f1" />
-                            <stop offset="1" stopColor="#34d399" />
-                        </linearGradient>
-                    </defs>
-                </svg>
-            </div>
-        </div>
+        <img 
+            src="https://res.cloudinary.com/deopcanic/image/upload/v1762699633/Untitled_design_1_fm25ty.svg" 
+            alt="Vsoft Logo" 
+            className="w-10 h-10 object-contain"
+        />
         <span className="text-xl font-black text-white tracking-tighter uppercase">
             VSOFT<span className="text-indigo-500 font-light">.core</span>
         </span>
