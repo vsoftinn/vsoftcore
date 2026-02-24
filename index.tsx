@@ -7,6 +7,41 @@ import { GoogleGenAI } from "@google/genai";
 
 // --- Custom Hooks ---
 
+const LANGAT_PROFILE = {
+    about: `With over 4 years of experience, I architect resilient ecosystems through full-stack mastery and automation. Trained in Mathematics and Computer Science, I focus on uncompromised data integrity and future-proof scalability.`,
+    experiences: [
+        {
+            role: 'Systems Developer | Tech Consultant',
+            company: 'Freelance',
+            period: 'Nov 2023 - Present',
+            description: 'Designing enterprise POS systems and automation kernels. Specialized in high-scale database cleanup and API reliability. Achieved 99.9% data accuracy through rigorous audit protocols.',
+            tags: ['Enterprise ERP','Automation','Full Stack','Database Integrity']
+        },
+        {
+            role: 'Data Analyst',
+            company: 'Twiga Foods',
+            period: 'Dec 2021 - Oct 2022',
+            description: 'Analyzed massive datasets to support operational decision-making. Developed BI dashboards and optimized SQL queries for high-speed logistics reporting.',
+            tags: ['Data Science','SQL Optimization','BI Dashboarding','Supply Chain']
+        },
+        {
+            role: 'IT Support Tech-Attachee',
+            company: 'Kericho County Govt',
+            period: 'Jan 2021 - Apr 2021',
+            description: 'Provided first-line technical support for critical government infrastructure. Managed server operations, network backups, and hardware updates.',
+            tags: ['Tech Support','SysAdmin','Networking','Server Ops']
+        },
+        {
+            role: 'BSc Mathematics & Computer Science',
+            company: 'Maseno University',
+            period: '2017 - 2021',
+            description: 'Second Class Honors. Comprehensive training in algorithmic logic, systems integration, and engineering principles.',
+            tags: ['Computer Science','Algorithmic Logic','Systems Integration']
+        }
+    ],
+    skillsSummary: 'Programming (Python, JS/TS, C#), Frameworks (React, .NET, Django), Databases (Postgres, MySQL), Systems & DevOps'
+};
+
 function useMousePosition() {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     useEffect(() => {
@@ -189,7 +224,12 @@ const Terminal = () => {
         } else if (cmdLower === 'status') {
             setTimeout(() => setHistory(prev => [...prev, 'SYSTEM: All protocols stable. Latent layer nominal.']), 200);
         } else if (cmdLower === 'about') {
-            setTimeout(() => setHistory(prev => [...prev, 'Vsoft Interactive Shell v2.5', 'Author: Langat Victor', 'Contact: Langatvictor299@gmail.com']), 200);
+            setTimeout(() => setHistory(prev => [...prev, `ABOUT: ${LANGAT_PROFILE.about}`, 'Contact: Langatvictor299@gmail.com']), 200);
+        } else if (cmdLower === 'experience') {
+            setTimeout(() => setHistory(prev => [...prev, 'EXPERIENCE:']), 150);
+            setTimeout(() => setHistory(prev => [...prev, ...LANGAT_PROFILE.experiences.map(e => `${e.role} @ ${e.company} (${e.period}) - ${e.description}`)]), 250);
+        } else if (cmdLower === 'skills') {
+            setTimeout(() => setHistory(prev => [...prev, `SKILLS: ${LANGAT_PROFILE.skillsSummary}`]), 200);
         } else {
             setTimeout(() => setHistory(prev => [...prev, `Command not found: ${trimmed}`]), 200);
         }
@@ -383,6 +423,11 @@ const ImageGenLab = () => {
     const [loading, setLoading] = useState(false);
     const [resultImage, setResultImage] = useState<string | null>(null);
 
+    const buildLifeJourneyPrompt = () => {
+        const intros = LANGAT_PROFILE.experiences.map(e => `${e.role} at ${e.company} (${e.period})`).join(', ');
+        return `Create an evocative life-journey illustration for Langat Victor that visualizes his career path and growth: ${intros}. Style: cinematic mixed-media collage, subtle 3D isometric elements, warm-indigo palette, emphasize transition, perseverance, and systems-thinking. Include symbolic motifs for data, networks, and education.`;
+    };
+
     const generateImage = async () => {
         if (!prompt.trim()) return;
         setLoading(true);
@@ -408,6 +453,18 @@ const ImageGenLab = () => {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        const lifePrompt = buildLifeJourneyPrompt();
+        setPrompt(lifePrompt);
+        // Auto-run only if an API key is configured to avoid noisy errors during development
+        if ((process.env.API_KEY && process.env.API_KEY.length > 0) || (typeof window !== 'undefined' && (window as any).__API_KEY__)) {
+            const t = setTimeout(() => {
+                generateImage();
+            }, 900);
+            return () => clearTimeout(t);
+        }
+    }, []);
 
     return (
         <section id="ai-lab" className="py-48 px-6 max-w-6xl mx-auto">
@@ -525,7 +582,7 @@ function App() {
                         </div>
                     </div>
                     <div className="aspect-square rounded-[4rem] overflow-hidden bg-slate-900 border border-slate-800 shadow-3xl relative group">
-                        <img src="https://res.cloudinary.com/deopcanic/image/upload/v1762698702/idea_sfa5yg.svg" alt="Innovation" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
+                        <img src="https://res.cloudinary.com/deopcanic/image/upload/v1771942592/3D_Isometric_Logo_with_Subtle_Icon_j90thj.png" alt="Innovation" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
                         <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/60 to-transparent" />
                     </div>
                 </div>
@@ -660,7 +717,7 @@ function App() {
                 </div>
                 <div className="max-w-7xl mx-auto mt-24 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-700">
                     <div className="flex flex-col gap-2">
-                        <span>Vsoft Innovations © 2025. All protocols preserved.</span>
+                        <span>❤️Vsoft Innovations © 2025. All protocols preserved.</span>
                         <span className="opacity-40">Nairobi, Kenya • Eastern Africa Cluster</span>
                     </div>
                     <div className="hover:text-indigo-500 transition-colors cursor-default select-none">
