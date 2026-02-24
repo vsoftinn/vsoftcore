@@ -121,7 +121,7 @@ section {
 input[type="text"],
 textarea {
     caret-color: var(--emerald-400) !important;
-    color: #ffffff !important;
+    color: #02b7ff !important;
     background-color: rgba(0, 0, 0, 0.4) !important;
 }
 
@@ -135,13 +135,13 @@ input[type="text"],
 textarea,
 .text-white input,
 .text-white textarea {
-    color: #ffffff !important;
+    color: #04b4fa !important;
 }
 
 /* Ensure text is visible while typing */
 input[type="text"]:focus,
 textarea:focus {
-    color: #000000 !important;
+    color: #030303 !important;
     background-color: rgba(0, 0, 0, 0.6) !important;
 }
 
