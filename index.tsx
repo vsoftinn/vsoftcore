@@ -489,7 +489,7 @@ function App() {
                         </div>
                     </div>
                     <div className="aspect-square rounded-[4rem] overflow-hidden bg-slate-900 border border-slate-800 shadow-3xl relative group">
-                        <img src="https://res.cloudinary.com/deopcanic/image/upload/v1762698702/idea_sfa5yg.svg" alt="Innovation" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
+                        <img src="https://res.cloudinary.com/deopcanic/image/upload/v1771942592/3D_Isometric_Logo_with_Subtle_Icon_j90thj.png" alt="Innovation" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
                         <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/60 to-transparent" />
                     </div>
                 </div>
@@ -617,7 +617,7 @@ function App() {
                         <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-300 mb-8 border-b border-white/5 pb-2">Connect</h4>
                         <ul className="space-y-4 text-sm font-bold">
                             <li><a href="https://github.com/vsoftinn" target="_blank" className="hover:text-indigo-400 transition-colors">GitHub Repository</a></li>
-                            <li><a href="https://linkedin.com/in/langat-victor" target="_blank" className="hover:text-indigo-400 transition-colors">LinkedIn Profile</a></li>
+                            <li><a href="https://www.linkedin.com/in/langat-victor-15792a213/" target="_blank" className="hover:text-indigo-400 transition-colors">LinkedIn Profile</a></li>
                             <li><a href="mailto:Langatvictor299@gmail.com" className="hover:text-indigo-400 transition-colors">Direct Protocol (Email)</a></li>
                         </ul>
                     </div>
