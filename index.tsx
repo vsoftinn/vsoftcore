@@ -3,19 +3,8 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import * as THREE from 'three';
-import { GoogleGenAI } from "@google/genai";
 
 // --- Custom Hooks ---
-
-// Declare Vite env for TypeScript support
-declare global {
-  interface ImportMeta {
-    env: {
-      VITE_API_KEY?: string;
-      [key: string]: any;
-    };
-  }
-}
 
 const LANGAT_PROFILE = {
     about: `With over 4 years of experience, I architect resilient ecosystems through full-stack mastery and automation. Trained in Mathematics and Computer Science, I focus on uncompromised data integrity and future-proof scalability.`,
@@ -455,30 +444,23 @@ const ImageGenLab = () => {
         setApiError(null);
         setResultImage(null);
         try {
-            const viteKey = import.meta.env.VITE_API_KEY;
-            const windowKey = (window as any).__API_KEY__;
-            const nodeKey = (process && (process as any).env && (process as any).env.API_KEY) || null;
-            console.log('ImageGenLab keys:', { viteKey: Boolean(viteKey), windowKey: Boolean(windowKey), nodeKey: Boolean(nodeKey) });
-            const apiKey = viteKey || windowKey || nodeKey;
-            if (!apiKey) throw new Error('No API key found. Put VITE_API_KEY in your .env and restart the dev server.');
-            const ai = new GoogleGenAI({ apiKey });
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash-image',
-                contents: { parts: [{ text: prompt }] },
+            const response = await fetch('/api/generate-image', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt }),
             });
-            // debug log full response (trimmed) for developer diagnostics
-            console.log('ImageGenLab response:', response?.candidates?.[0]);
-            let imageUrl: string | null = null;
-            if (response.candidates?.[0]?.content?.parts) {
-                for (const part of response.candidates[0].content.parts) {
-                    if (part.inlineData && part.inlineData.data) {
-                        imageUrl = `data:image/png;base64,${part.inlineData.data}`;
-                        break;
-                    }
-                }
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `Server error: ${response.statusText}`);
             }
-            if (imageUrl) setResultImage(imageUrl);
-            else setApiError('API returned no image data. Check console for raw response.');
+
+            const data = await response.json();
+            if (data.imageUrl) {
+                setResultImage(data.imageUrl);
+            } else {
+                setApiError('No image URL in server response');
+            }
         } catch (err: any) {
             console.error('ImageGenLab error:', err);
             setApiError(err?.message || String(err));
@@ -490,13 +472,8 @@ const ImageGenLab = () => {
     useEffect(() => {
         const lifePrompt = buildLifeJourneyPrompt();
         setPrompt(lifePrompt);
-        // Auto-run only if an API key is configured to avoid noisy errors during development
-        if (import.meta.env.VITE_API_KEY || (typeof window !== 'undefined' && (window as any).__API_KEY__)) {
-            const t = setTimeout(() => {
-                generateImage();
-            }, 900);
-            return () => clearTimeout(t);
-        }
+        // No auto-run; wait for user to click Manifest button
+        // The API key is now server-side in Vercel env
     }, []);
 
     return (
@@ -773,3 +750,5 @@ if (rootElement) {
     const root = ReactDOM.createRoot(rootElement);
     root.render(<App />);
 }
+
+export default App;
