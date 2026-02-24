@@ -132,6 +132,7 @@ const VsoftBackground = () => {
 const Terminal = () => {
     const [history, setHistory] = useState<string[]>([]);
     const [showVsoftFont, setShowVsoftFont] = useState(false);
+    const [input, setInput] = useState('');
     const scrollRef = useRef<HTMLDivElement>(null);
 
     const vsoftShenanigans = useMemo(() => [
@@ -152,6 +153,7 @@ const Terminal = () => {
         "SYSTEM: All protocols stable. Ending simulation."
     ], []);
 
+    // Seed the automatic lines once, then show a short overlay without wiping history
     useEffect(() => {
         let i = 0;
         const interval = setInterval(() => {
@@ -163,9 +165,7 @@ const Terminal = () => {
                 clearInterval(interval);
                 setTimeout(() => {
                     setShowVsoftFont(false);
-                    setHistory([]);
-                    i = 0;
-                }, 6000); 
+                }, 6000);
             }
         }, 800);
         return () => clearInterval(interval);
@@ -176,6 +176,25 @@ const Terminal = () => {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
     }, [history, showVsoftFont]);
+
+    const handleCommand = (cmd: string) => {
+        const trimmed = cmd.trim();
+        if (!trimmed) return;
+        const cmdLower = trimmed.toLowerCase();
+        setHistory(prev => [...prev, `> ${trimmed}`]);
+        if (cmdLower === 'help') {
+            setTimeout(() => setHistory(prev => [...prev, 'help - list commands', 'clear - clear screen', 'status - show system status', 'about - information']), 200);
+        } else if (cmdLower === 'clear') {
+            setTimeout(() => setHistory([]), 120);
+        } else if (cmdLower === 'status') {
+            setTimeout(() => setHistory(prev => [...prev, 'SYSTEM: All protocols stable. Latent layer nominal.']), 200);
+        } else if (cmdLower === 'about') {
+            setTimeout(() => setHistory(prev => [...prev, 'Vsoft Interactive Shell v2.5', 'Author: Langat Victor', 'Contact: Langatvictor299@gmail.com']), 200);
+        } else {
+            setTimeout(() => setHistory(prev => [...prev, `Command not found: ${trimmed}`]), 200);
+        }
+        setInput('');
+    };
 
     return (
         <div 
@@ -190,37 +209,54 @@ const Terminal = () => {
                 </div>
                 <span className="ml-4 text-[10px] text-indigo-500/40 font-black uppercase tracking-[0.2em]">vsoft-interactive-shell</span>
             </div>
-            
+
             <div ref={scrollRef} className="p-6 flex-grow overflow-y-auto space-y-2 scrollbar-hide custom-scroll relative">
+                {history.map((line, i) => (
+                    <motion.div 
+                        initial={{ opacity: 0, x: -5 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        key={i} 
+                        className="leading-relaxed flex items-start"
+                    >
+                        <span className="text-emerald-500/30 mr-3 flex-shrink-0 font-bold">::</span>
+                        <span className="opacity-80 font-medium">{line}</span>
+                    </motion.div>
+                ))}
+
                 <AnimatePresence>
-                    {showVsoftFont ? (
+                    {showVsoftFont && (
                         <motion.div 
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 0.95, scale: 1 }}
                             exit={{ opacity: 0 }}
                             className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none p-10 text-center"
+                            style={{
+                                background: 'linear-gradient(180deg, rgba(2,6,23,0.28), rgba(2,6,23,0.0))'
+                            }}
                         >
-                            <span className="text-8xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-indigo-500/20 select-none tracking-tighter leading-none" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+                            <span className="text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-indigo-500/20 select-none tracking-tighter leading-none" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
                                 VSOFT
                             </span>
-                            <span className="mt-4 text-[10px] uppercase tracking-[1em] text-emerald-400 font-black animate-pulse">Core Operational</span>
+                            <span className="mt-3 text-[10px] uppercase tracking-[1em] text-emerald-400 font-black animate-pulse">Core Operational</span>
                         </motion.div>
-                    ) : (
-                        history.map((line, i) => (
-                            <motion.div 
-                                initial={{ opacity: 0, x: -5 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                key={i} 
-                                className="leading-relaxed flex items-start"
-                            >
-                                <span className="text-emerald-500/30 mr-3 flex-shrink-0 font-bold">::</span>
-                                <span className="opacity-80 font-medium">
-                                    {line}
-                                </span>
-                            </motion.div>
-                        ))
                     )}
                 </AnimatePresence>
+            </div>
+
+            <div className="p-4 border-t border-indigo-500/5 flex gap-3 items-center shrink-0">
+                <input
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === 'Enter') handleCommand(input); }}
+                    placeholder="Type command (help, status, clear, about)"
+                    className="flex-grow bg-black/40 border border-slate-800 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors font-medium"
+                />
+                <button
+                    onClick={() => handleCommand(input)}
+                    className="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-2xl font-black transition-all active:scale-95"
+                >
+                    Run
+                </button>
             </div>
         </div>
     );
@@ -489,7 +525,7 @@ function App() {
                         </div>
                     </div>
                     <div className="aspect-square rounded-[4rem] overflow-hidden bg-slate-900 border border-slate-800 shadow-3xl relative group">
-                        <img src="https://res.cloudinary.com/deopcanic/image/upload/v1771942592/3D_Isometric_Logo_with_Subtle_Icon_j90thj.png" alt="Innovation" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
+                        <img src="https://res.cloudinary.com/deopcanic/image/upload/v1762698702/idea_sfa5yg.svg" alt="Innovation" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
                         <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/60 to-transparent" />
                     </div>
                 </div>
@@ -617,7 +653,7 @@ function App() {
                         <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-300 mb-8 border-b border-white/5 pb-2">Connect</h4>
                         <ul className="space-y-4 text-sm font-bold">
                             <li><a href="https://github.com/vsoftinn" target="_blank" className="hover:text-indigo-400 transition-colors">GitHub Repository</a></li>
-                            <li><a href="https://www.linkedin.com/in/langat-victor-15792a213/" target="_blank" className="hover:text-indigo-400 transition-colors">LinkedIn Profile</a></li>
+                            <li><a href="https://linkedin.com/in/langat-victor" target="_blank" className="hover:text-indigo-400 transition-colors">LinkedIn Profile</a></li>
                             <li><a href="mailto:Langatvictor299@gmail.com" className="hover:text-indigo-400 transition-colors">Direct Protocol (Email)</a></li>
                         </ul>
                     </div>
