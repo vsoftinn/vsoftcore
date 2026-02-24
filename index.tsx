@@ -24,7 +24,7 @@ function useMousePosition() {
 const VsoftLogo = () => (
     <div className="flex items-center gap-3 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
         <img 
-            src="https://res.cloudinary.com/deopcanic/image/upload/v1762699633/Untitled_design_1_fm25ty.svg" 
+            src="https://res.cloudinary.com/deopcanic/image/upload/v1771942592/3D_Isometric_Logo_with_Subtle_Icon_j90thj.png" 
             alt="Vsoft Logo" 
             className="w-10 h-10 object-contain"
         />
