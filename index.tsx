@@ -733,7 +733,7 @@ function App() {
                 </div>
                 <div className="max-w-7xl mx-auto mt-24 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-700">
                     <div className="flex flex-col gap-2">
-                        <span>Vsoft Innovations © 2025. All protocols preserved.</span>
+                        <span>❤️Vsoft Innovations © 2025. All protocols preserved.</span>
                         <span className="opacity-40">Nairobi, Kenya • Eastern Africa Cluster</span>
                     </div>
                     <div className="hover:text-indigo-500 transition-colors cursor-default select-none">
