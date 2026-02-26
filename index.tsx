@@ -659,14 +659,14 @@ function App() {
                         title="AI Simplified" 
                         desc="Neural educational cluster designed to deconstruct complex machine learning concepts for intuitive pedagogical mastery." 
                         tags={['AI-Native', 'React', 'Django', 'Gemini API']} 
-                        year="2024" 
+                        year="2026" 
                         demoUrl="learnaisimply.com" 
                     />
                     <ProjectCard 
-                        title="Geke Luxury" 
+                        <h1></h1>title="Geke Artwork"</h1> 
                         desc="Bespoke digital sanctuary for art curators, featuring ultra-low latency cores and sophisticated transactional integrity." 
                         tags={['Luxury Retail', 'Next.js', 'Stripe', 'Art-Tech']} 
-                        year="2023" 
+                        year="2025" 
                         demoUrl="https://geke.netlify.app/" 
                     />
                     <ProjectCard 
@@ -680,7 +680,7 @@ function App() {
                         title="Cyber MANET Hub" 
                         desc="Simulation hub for decentralized wireless cluster vulnerability mapping and Blackhole attack modeling." 
                         tags={['CyberSec', 'NS-3', 'C++', 'Threat Modeling']} 
-                        year="2022" 
+                        year="2024" 
                         demoUrl="https://drive.google.com/file/d/1eQZvuF2FQttwJdypDS8yhHdt5U87_uQ1/view?usp=sharing" 
                     />
                 </div>
