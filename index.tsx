@@ -3,52 +3,9 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import * as THREE from 'three';
+import { GoogleGenAI } from "@google/genai";
 
 // --- Custom Hooks ---
-
-const LANGAT_PROFILE = {
-    about: `With over 4 years of experience, I architect resilient ecosystems through full-stack mastery and automation. Trained in Mathematics and Computer Science, I focus on uncompromised data integrity and future-proof scalability.`,
-    experiences: [
-        {
-            role: 'Systems Developer | Tech Consultant',
-            company: 'Freelance',
-            period: 'Nov 2023 - Present',
-            description: 'Designing enterprise POS systems and automation kernels. Specialized in high-scale database cleanup and API reliability. Achieved 99.9% data accuracy through rigorous audit protocols.',
-            tags: ['Enterprise ERP','Automation','Full Stack','Database Integrity']
-        },
-        {
-            role: 'Data Analyst',
-            company: 'Twiga Foods',
-            period: 'Dec 2021 - Oct 2022',
-            description: 'Analyzed massive datasets to support operational decision-making. Developed BI dashboards and optimized SQL queries for high-speed logistics reporting.',
-            tags: ['Data Science','SQL Optimization','BI Dashboarding','Supply Chain']
-        },
-        {
-            role: 'IT Support Tech-Attachee',
-            company: 'Kericho County Govt',
-            period: 'Jan 2021 - Apr 2021',
-            description: 'Provided first-line technical support for critical government infrastructure. Managed server operations, network backups, and hardware updates.',
-            tags: ['Tech Support','SysAdmin','Networking','Server Ops']
-        },
-        {
-            role: 'BSc Mathematics & Computer Science',
-            company: 'Maseno University',
-            period: '2017 - 2021',
-            description: 'Second Class Honors. Comprehensive training in algorithmic logic, systems integration, and engineering principles.',
-            tags: ['Computer Science','Algorithmic Logic','Systems Integration']
-        }
-    ],
-    skillsSummary: 'Programming (Python, JS/TS, C#), Frameworks (React, .NET, Django), Databases (Postgres, MySQL), Systems & DevOps'
-};
-
-const formatLog = (text: string, level = 'INFO') => {
-    try {
-        const ts = new Date().toLocaleTimeString();
-        return `${ts} [${level}] ${text}`;
-    } catch (e) {
-        return `[${level}] ${text}`;
-    }
-};
 
 function useMousePosition() {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -66,11 +23,26 @@ function useMousePosition() {
 
 const VsoftLogo = () => (
     <div className="flex items-center gap-3 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-        <img 
-            src="https://res.cloudinary.com/deopcanic/image/upload/v1771942592/3D_Isometric_Logo_with_Subtle_Icon_j90thj.png" 
-            alt="Vsoft Logo" 
-            className="w-10 h-10 object-contain"
-        />
+        <div className="relative w-10 h-10">
+            <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 to-emerald-400/20 rounded-xl blur-md"
+            />
+            <div className="absolute inset-0 bg-slate-900 border border-white/10 rounded-xl flex items-center justify-center shadow-2xl group-hover:border-indigo-500/50 transition-colors">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L3 7V17L12 22L21 17V7L12 2Z" stroke="url(#logo-grad)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M12 22V12" stroke="url(#logo-grad)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M21 7L12 12L3 7" stroke="url(#logo-grad)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <defs>
+                        <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="22" gradientUnits="userSpaceOnUse">
+                            <stop stopColor="#6366f1" />
+                            <stop offset="1" stopColor="#34d399" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+        </div>
         <span className="text-xl font-black text-white tracking-tighter uppercase">
             VSOFT<span className="text-indigo-500 font-light">.core</span>
         </span>
@@ -175,7 +147,6 @@ const VsoftBackground = () => {
 const Terminal = () => {
     const [history, setHistory] = useState<string[]>([]);
     const [showVsoftFont, setShowVsoftFont] = useState(false);
-    const [input, setInput] = useState('');
     const scrollRef = useRef<HTMLDivElement>(null);
 
     const vsoftShenanigans = useMemo(() => [
@@ -196,19 +167,20 @@ const Terminal = () => {
         "SYSTEM: All protocols stable. Ending simulation."
     ], []);
 
-    // Seed the automatic lines once, then show a short overlay without wiping history
     useEffect(() => {
         let i = 0;
         const interval = setInterval(() => {
             if (i < vsoftShenanigans.length) {
-                setHistory(prev => [...prev, formatLog(vsoftShenanigans[i], 'SYS')]);
+                setHistory(prev => [...prev, vsoftShenanigans[i]]);
                 i++;
             } else {
                 setShowVsoftFont(true);
                 clearInterval(interval);
                 setTimeout(() => {
                     setShowVsoftFont(false);
-                }, 6000);
+                    setHistory([]);
+                    i = 0;
+                }, 6000); 
             }
         }, 800);
         return () => clearInterval(interval);
@@ -219,30 +191,6 @@ const Terminal = () => {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
     }, [history, showVsoftFont]);
-
-    const handleCommand = (cmd: string) => {
-        const trimmed = cmd.trim();
-        if (!trimmed) return;
-        const cmdLower = trimmed.toLowerCase();
-        setHistory(prev => [...prev, formatLog(`> ${trimmed}`, 'CMD')]);
-        if (cmdLower === 'help') {
-            setTimeout(() => setHistory(prev => [...prev, formatLog('help - list commands', 'HLP'), formatLog('clear - clear screen', 'HLP'), formatLog('status - show system status', 'HLP'), formatLog('about - information', 'HLP')] ), 200);
-        } else if (cmdLower === 'clear') {
-            setTimeout(() => setHistory([]), 120);
-        } else if (cmdLower === 'status') {
-            setTimeout(() => setHistory(prev => [...prev, formatLog('SYSTEM: All protocols stable. Latent layer nominal.', 'OK')]), 200);
-        } else if (cmdLower === 'about') {
-            setTimeout(() => setHistory(prev => [...prev, formatLog(`ABOUT: ${LANGAT_PROFILE.about}`, 'BIO'), formatLog('Contact: Langatvictor299@gmail.com', 'BIO')]), 200);
-        } else if (cmdLower === 'experience') {
-            setTimeout(() => setHistory(prev => [...prev, formatLog('EXPERIENCE:', 'HDR')]), 150);
-            setTimeout(() => setHistory(prev => [...prev, ...LANGAT_PROFILE.experiences.map(e => formatLog(`${e.role} @ ${e.company} (${e.period}) - ${e.description}`, 'EXP'))]), 250);
-        } else if (cmdLower === 'skills') {
-            setTimeout(() => setHistory(prev => [...prev, formatLog(`SKILLS: ${LANGAT_PROFILE.skillsSummary}`, 'SKL')]), 200);
-        } else {
-            setTimeout(() => setHistory(prev => [...prev, formatLog(`Command not found: ${trimmed}`, 'ERR')]), 200);
-        }
-        setInput('');
-    };
 
     return (
         <div 
@@ -257,55 +205,37 @@ const Terminal = () => {
                 </div>
                 <span className="ml-4 text-[10px] text-indigo-500/40 font-black uppercase tracking-[0.2em]">vsoft-interactive-shell</span>
             </div>
-
+            
             <div ref={scrollRef} className="p-6 flex-grow overflow-y-auto space-y-2 scrollbar-hide custom-scroll relative">
-                {history.map((line, i) => (
-                    <motion.div 
-                        initial={{ opacity: 0, x: -5 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        key={i} 
-                        className="leading-relaxed flex items-start"
-                    >
-                        <span className="text-emerald-500/30 mr-3 flex-shrink-0 font-bold">::</span>
-                        <span className="opacity-80 font-medium">{line}</span>
-                    </motion.div>
-                ))}
-
                 <AnimatePresence>
-                    {showVsoftFont && (
+                    {showVsoftFont ? (
                         <motion.div 
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 0.95, scale: 1 }}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0 }}
                             className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none p-10 text-center"
-                            style={{
-                                background: 'linear-gradient(180deg, rgba(2,6,23,0.28), rgba(2,6,23,0.0))'
-                            }}
                         >
-                            <span className="text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-indigo-500/20 select-none tracking-tighter leading-none" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+                            <span className="text-8xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-indigo-500/20 select-none tracking-tighter leading-none" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
                                 VSOFT
                             </span>
-                            <span className="mt-3 text-[10px] uppercase tracking-[1em] text-emerald-400 font-black animate-pulse">Core Operational</span>
+                            <span className="mt-4 text-[10px] uppercase tracking-[1em] text-emerald-400 font-black animate-pulse">Core Operational</span>
                         </motion.div>
+                    ) : (
+                        history.map((line, i) => (
+                            <motion.div 
+                                initial={{ opacity: 0, x: -5 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                key={i} 
+                                className="leading-relaxed flex items-start"
+                            >
+                                <span className="text-emerald-500/30 mr-3 flex-shrink-0 font-bold">::</span>
+                                <span className="opacity-80 font-medium">
+                                    {line}
+                                </span>
+                            </motion.div>
+                        ))
                     )}
                 </AnimatePresence>
-            </div>
-
-            <div className="p-4 border-t border-indigo-500/5 flex gap-3 items-center shrink-0">
-                <input
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === 'Enter') handleCommand(input); }}
-                    placeholder="Type command (help, status, clear, about)"
-                    style={{ WebkitTextFillColor: '#ffffff', color: '#ffffff' }}
-                    className="flex-grow bg-black/40 border border-slate-800 rounded-2xl px-4 py-3 text-white placeholder:text-slate-500 caret-emerald-400 focus:outline-none focus:border-indigo-500 transition-colors font-medium relative z-20"
-                />
-                <button
-                    onClick={() => handleCommand(input)}
-                    className="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-2xl font-black transition-all active:scale-95"
-                >
-                    Run
-                </button>
             </div>
         </div>
     );
@@ -431,50 +361,32 @@ const ImageGenLab = () => {
     const [prompt, setPrompt] = useState("");
     const [loading, setLoading] = useState(false);
     const [resultImage, setResultImage] = useState<string | null>(null);
-    const [apiError, setApiError] = useState<string | null>(null);
-
-    const buildLifeJourneyPrompt = () => {
-        const intros = LANGAT_PROFILE.experiences.map(e => `${e.role} at ${e.company} (${e.period}) — ${e.description}`).join('; ');
-        return `Illustrate the life journey of Langat Victor as a single cohesive scene that visualizes career progression, learning, and systems-thinking. Base the composition on these milestones: ${intros}. Visual style: cinematic mixed-media collage with subtle 3D isometric forms, warm-indigo and emerald accents, soft lighting, and symbolic motifs for data, networks, infrastructure, and education. Tone: hopeful, resilient, and methodical. Include a focal montage showing transition from learning (university) -> support & analysis -> consulting & systems design.`;
-    };
 
     const generateImage = async () => {
         if (!prompt.trim()) return;
         setLoading(true);
-        setApiError(null);
-        setResultImage(null);
         try {
-            const response = await fetch('/api/generate-image', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt }),
+            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const response = await ai.models.generateContent({
+                model: 'gemini-2.5-flash-image',
+                contents: { parts: [{ text: prompt }] },
             });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || `Server error: ${response.statusText}`);
+            let imageUrl = null;
+            if (response.candidates?.[0]?.content?.parts) {
+                for (const part of response.candidates[0].content.parts) {
+                    if (part.inlineData) {
+                        imageUrl = `data:image/png;base64,${part.inlineData.data}`;
+                        break;
+                    }
+                }
             }
-
-            const data = await response.json();
-            if (data.imageUrl) {
-                setResultImage(data.imageUrl);
-            } else {
-                setApiError('No image URL in server response');
-            }
-        } catch (err: any) {
-            console.error('ImageGenLab error:', err);
-            setApiError(err?.message || String(err));
+            if (imageUrl) setResultImage(imageUrl);
+        } catch (err) {
+            console.error(err);
         } finally {
             setLoading(false);
         }
     };
-
-    useEffect(() => {
-        const lifePrompt = buildLifeJourneyPrompt();
-        setPrompt(lifePrompt);
-        // No auto-run; wait for user to click Manifest button
-        // The API key is now server-side in Vercel env
-    }, []);
 
     return (
         <section id="ai-lab" className="py-48 px-6 max-w-6xl mx-auto">
@@ -492,8 +404,7 @@ const ImageGenLab = () => {
                         onChange={(e) => setPrompt(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && generateImage()}
                         placeholder="Describe a cybernetic landscape..."
-                        style={{ WebkitTextFillColor: '#ffffff', color: '#ffffff' }}
-                        className="flex-grow bg-black/40 border border-slate-700 rounded-2xl px-8 py-4 text-white placeholder:text-slate-400 caret-emerald-400 focus:outline-none focus:border-indigo-500 transition-colors font-medium relative z-20"
+                        className="flex-grow bg-black/40 border border-slate-700 rounded-2xl px-8 py-4 text-white focus:outline-none focus:border-indigo-500 transition-colors font-medium"
                     />
                     <button 
                         disabled={loading}
@@ -508,12 +419,7 @@ const ImageGenLab = () => {
                     {resultImage ? (
                         <img src={resultImage} alt="Neural Result" className="w-full h-full object-cover" />
                     ) : (
-                        <div className="flex flex-col items-center justify-center gap-3">
-                            <span className="text-slate-800 font-mono uppercase tracking-widest font-black opacity-40">{loading ? 'Computing Neural Vectors...' : 'Awaiting Latent Seed'}</span>
-                            {apiError && (
-                                <div className="text-sm text-red-400 font-bold bg-black/50 px-4 py-2 rounded-md max-w-[90%] text-center">{apiError}</div>
-                            )}
-                        </div>
+                        <span className="text-slate-800 font-mono uppercase tracking-widest font-black opacity-40">{loading ? "Computing Neural Vectors..." : "Awaiting Latent Seed"}</span>
                     )}
                 </div>
             </div>
@@ -598,7 +504,7 @@ function App() {
                         </div>
                     </div>
                     <div className="aspect-square rounded-[4rem] overflow-hidden bg-slate-900 border border-slate-800 shadow-3xl relative group">
-                        <img src="https://res.cloudinary.com/deopcanic/image/upload/v1772112705/DSC_8545.JPG_xbvko6.jpg" alt="Innovation" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
+                        <img src="https://res.cloudinary.com/deopcanic/image/upload/v1762698702/idea_sfa5yg.svg" alt="Innovation" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
                         <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/60 to-transparent" />
                     </div>
                 </div>
@@ -659,14 +565,14 @@ function App() {
                         title="AI Simplified" 
                         desc="Neural educational cluster designed to deconstruct complex machine learning concepts for intuitive pedagogical mastery." 
                         tags={['AI-Native', 'React', 'Django', 'Gemini API']} 
-                        year="2026" 
+                        year="2024" 
                         demoUrl="learnaisimply.com" 
                     />
                     <ProjectCard 
-                        title="Geke Artwork"
+                        title="Geke Luxury" 
                         desc="Bespoke digital sanctuary for art curators, featuring ultra-low latency cores and sophisticated transactional integrity." 
                         tags={['Luxury Retail', 'Next.js', 'Stripe', 'Art-Tech']} 
-                        year="2025" 
+                        year="2023" 
                         demoUrl="https://geke.netlify.app/" 
                     />
                     <ProjectCard 
@@ -677,11 +583,11 @@ function App() {
                         demoUrl="drive.google.com/file/d/1gmFB-Hp5q98Yr-6M55o8aJCT2Ju9YNtO/view?usp=sharing" 
                     />
                     <ProjectCard 
-                        title="Blackhole Attack In Manet" 
+                        title="Cyber MANET Hub" 
                         desc="Simulation hub for decentralized wireless cluster vulnerability mapping and Blackhole attack modeling." 
                         tags={['CyberSec', 'NS-3', 'C++', 'Threat Modeling']} 
-                        year="2024" 
-                        demoUrl="https://res.cloudinary.com/deopcanic/video/upload/v1769270962/blackhole_filwrj.mp4" 
+                        year="2022" 
+                        demoUrl="https://drive.google.com/file/d/1eQZvuF2FQttwJdypDS8yhHdt5U87_uQ1/view?usp=sharing" 
                     />
                 </div>
             </section>
@@ -726,14 +632,14 @@ function App() {
                         <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-300 mb-8 border-b border-white/5 pb-2">Connect</h4>
                         <ul className="space-y-4 text-sm font-bold">
                             <li><a href="https://github.com/vsoftinn" target="_blank" className="hover:text-indigo-400 transition-colors">GitHub Repository</a></li>
-                            <li><a href="https://www.linkedin.com/in/langat-victor-15792a213/" target="_blank" className="hover:text-indigo-400 transition-colors">LinkedIn Profile</a></li>
+                            <li><a href="https://linkedin.com/in/langat-victor" target="_blank" className="hover:text-indigo-400 transition-colors">LinkedIn Profile</a></li>
                             <li><a href="mailto:Langatvictor299@gmail.com" className="hover:text-indigo-400 transition-colors">Direct Protocol (Email)</a></li>
                         </ul>
                     </div>
                 </div>
                 <div className="max-w-7xl mx-auto mt-24 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-700">
                     <div className="flex flex-col gap-2">
-                        <span>❤️Vsoft Innovations © 2025. All protocols preserved.</span>
+                        <span>Vsoft Innovations © 2025. All protocols preserved.</span>
                         <span className="opacity-40">Nairobi, Kenya • Eastern Africa Cluster</span>
                     </div>
                     <div className="hover:text-indigo-500 transition-colors cursor-default select-none">
@@ -750,5 +656,3 @@ if (rootElement) {
     const root = ReactDOM.createRoot(rootElement);
     root.render(<App />);
 }
-
-export default App;

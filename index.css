@@ -113,36 +113,7 @@ section {
 }
 
 .terminal-input {
-    /* legacy: ensure caret is visible when class applied elsewhere */
-    caret-color: var(--emerald-400);
-}
-
-/* Ensure inputs and textareas show typed text and a visible caret by default */
-input[type="text"],
-textarea {
-    caret-color: var(--emerald-400) !important;
-    color: #02b7ff !important;
-    background-color: rgba(0, 0, 0, 0.4) !important;
-}
-
-input[type="text"]::placeholder,
-textarea::placeholder {
-    color: rgba(148, 163, 184, 0.7) !important;
-}
-
-/* Override any text hiding caused by opacity or color blending */
-input[type="text"],
-textarea,
-.text-white input,
-.text-white textarea {
-    color: #04b4fa !important;
-}
-
-/* Ensure text is visible while typing */
-input[type="text"]:focus,
-textarea:focus {
-    color: #030303 !important;
-    background-color: rgba(0, 0, 0, 0.6) !important;
+    caret-color: transparent;
 }
 
 .custom-scroll::-webkit-scrollbar {
