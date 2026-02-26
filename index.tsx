@@ -663,7 +663,7 @@ function App() {
                         demoUrl="learnaisimply.com" 
                     />
                     <ProjectCard 
-                        <h1></h1>title="Geke Artwork"</h1> 
+                        <h1 title="Geke Artwork" </h1>
                         desc="Bespoke digital sanctuary for art curators, featuring ultra-low latency cores and sophisticated transactional integrity." 
                         tags={['Luxury Retail', 'Next.js', 'Stripe', 'Art-Tech']} 
                         year="2025" 
