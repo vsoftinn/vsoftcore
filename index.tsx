@@ -598,7 +598,7 @@ function App() {
                         </div>
                     </div>
                     <div className="aspect-square rounded-[4rem] overflow-hidden bg-slate-900 border border-slate-800 shadow-3xl relative group">
-                        <img src="https://res.cloudinary.com/deopcanic/image/upload/v1771942592/3D_Isometric_Logo_with_Subtle_Icon_j90thj.png" alt="Innovation" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
+                        <img src="https://res.cloudinary.com/deopcanic/image/upload/v1772112705/DSC_8545.JPG_xbvko6.jpg" alt="Innovation" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
                         <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/60 to-transparent" />
                     </div>
                 </div>
@@ -659,14 +659,14 @@ function App() {
                         title="AI Simplified" 
                         desc="Neural educational cluster designed to deconstruct complex machine learning concepts for intuitive pedagogical mastery." 
                         tags={['AI-Native', 'React', 'Django', 'Gemini API']} 
-                        year="2024" 
+                        year="2026" 
                         demoUrl="learnaisimply.com" 
                     />
                     <ProjectCard 
-                        title="Geke Luxury" 
+                        title="Geke Artwork" 
                         desc="Bespoke digital sanctuary for art curators, featuring ultra-low latency cores and sophisticated transactional integrity." 
                         tags={['Luxury Retail', 'Next.js', 'Stripe', 'Art-Tech']} 
-                        year="2023" 
+                        year="2025" 
                         demoUrl="https://geke.netlify.app/" 
                     />
                     <ProjectCard 
@@ -677,10 +677,10 @@ function App() {
                         demoUrl="drive.google.com/file/d/1gmFB-Hp5q98Yr-6M55o8aJCT2Ju9YNtO/view?usp=sharing" 
                     />
                     <ProjectCard 
-                        title="Cyber MANET Hub" 
+                        title="Blackhole Attack" 
                         desc="Simulation hub for decentralized wireless cluster vulnerability mapping and Blackhole attack modeling." 
                         tags={['CyberSec', 'NS-3', 'C++', 'Threat Modeling']} 
-                        year="2022" 
+                        year="2023" 
                         demoUrl="https://drive.google.com/file/d/1eQZvuF2FQttwJdypDS8yhHdt5U87_uQ1/view?usp=sharing" 
                     />
                 </div>
