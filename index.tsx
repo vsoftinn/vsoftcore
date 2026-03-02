@@ -598,7 +598,7 @@ function App() {
                         </div>
                     </div>
                     <div className="aspect-square rounded-[4rem] overflow-hidden bg-slate-900 border border-slate-800 shadow-3xl relative group">
-                        <img src="https://res.cloudinary.com/deopcanic/image/upload/v1772112705/DSC_8545.JPG_xbvko6.jpg" alt="Innovation" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
+                        <img src="https://res.cloudinary.com/deopcanic/image/upload/v1772487581/IMG-20260302-WA0010_orybmf.jpg" alt="Innovation" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
                         <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/60 to-transparent" />
                     </div>
                 </div>
@@ -681,7 +681,7 @@ function App() {
                         desc="Simulation hub for decentralized wireless cluster vulnerability mapping and Blackhole attack modeling." 
                         tags={['CyberSec', 'NS-3', 'C++', 'Threat Modeling']} 
                         year="2023" 
-                        demoUrl="https://drive.google.com/file/d/1eQZvuF2FQttwJdypDS8yhHdt5U87_uQ1/view?usp=sharing" 
+                        demoUrl="https://res.cloudinary.com/deopcanic/video/upload/v1769270962/blackhole_filwrj.mp4" 
                     />
                 </div>
             </section>
@@ -733,7 +733,7 @@ function App() {
                 </div>
                 <div className="max-w-7xl mx-auto mt-24 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] font-black uppercase tracking-[0.3em] text-slate-700">
                     <div className="flex flex-col gap-2">
-                        <span>Vsoft Innovations © 2025. All protocols preserved.</span>
+                        <span>❤️Vsoft Innovations © 2025. All protocols preserved.</span>
                         <span className="opacity-40">Nairobi, Kenya • Eastern Africa Cluster</span>
                     </div>
                     <div className="hover:text-indigo-500 transition-colors cursor-default select-none">
