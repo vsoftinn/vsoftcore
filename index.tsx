@@ -72,7 +72,7 @@ const VsoftLogo = () => (
             className="w-10 h-10 object-contain"
         />
         <span className="text-xl font-black text-white tracking-tighter uppercase">
-            VSOFT<span className="text-indigo-500 font-light">.core</span>
+            Vsoft<span className="text-indigo-500 font-light">.core</span>
         </span>
     </div>
 );
