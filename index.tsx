@@ -668,6 +668,15 @@ function App() {
                         tags={['Luxury Retail', 'Next.js', 'Stripe', 'Art-Tech']} 
                         year="2025" 
                         demoUrl="https://geke.netlify.app/" 
+                        
+                    <ProjectCard 
+  title="Vsoft Innovations" 
+  desc="Elite tech hub delivering mission-critical software, secure network infrastructure, and advanced surveillance systems for enterprise-grade reliability." 
+  tags={['Systems Arch', 'CyberSec', 'Cloud-Native', 'IT Infrastructure']} 
+  year="2026" 
+  demoUrl="https://vsoft-innovations-hub.vercel.app/#home" 
+/>
+                    
                     />
                     <ProjectCard 
                         title="V-Pharm ERP" 
