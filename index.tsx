@@ -663,12 +663,12 @@ function App() {
                         demoUrl="learnaisimply.com" 
                     />
                     <ProjectCard 
-                        title="Geke Artwork" 
-                        desc="Bespoke digital sanctuary for art curators, featuring ultra-low latency cores and sophisticated transactional integrity." 
-                        tags={['Luxury Retail', 'Next.js', 'Stripe', 'Art-Tech']} 
-                        year="2025" 
-                        demoUrl="https://geke.netlify.app/" 
-                        />
+                        title="St. Joseph the Worker, Kangemi" 
+                        desc="Official digital hub for the Jesuit-run parish and its social development programs. Features a comprehensive overview of their 40-year impact in healthcare, technical education, and community support." 
+                        tags={['Community Dev', 'Social Impact', 'Institutional', 'Jesuit Ministry']} 
+                        year="2026" 
+                        demoUrl="https://saintjosephkangemi.netlify.app/" 
+                         /> 
                     <ProjectCard 
                        title="Vsoft Innovations" 
                        desc="Elite tech hub delivering mission-critical software, secure network infrastructure, and advanced surveillance systems for enterprise-grade reliability." 
@@ -676,6 +676,14 @@ function App() {
                        year="2026" 
                        demoUrl="https://vsoft-innovations-hub.vercel.app/#home" 
                        />
+                    <ProjectCard 
+                        title="Geke Artwork" 
+                        desc="Bespoke digital sanctuary for art curators, featuring ultra-low latency cores and sophisticated transactional integrity." 
+                        tags={['Luxury Retail', 'Next.js', 'Stripe', 'Art-Tech']} 
+                        year="2025" 
+                        demoUrl="https://geke.netlify.app/" 
+                        />
+                   
                     <ProjectCard 
                         title="V-Pharm ERP" 
                         desc="Mission-critical pharmacy logistics engine with predictive inventory synchronization and robust security auditing." 
