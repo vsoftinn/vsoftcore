@@ -677,7 +677,6 @@ function App() {
   demoUrl="https://vsoft-innovations-hub.vercel.app/#home" 
 />
                     
-                    />
                     <ProjectCard 
                         title="V-Pharm ERP" 
                         desc="Mission-critical pharmacy logistics engine with predictive inventory synchronization and robust security auditing." 
